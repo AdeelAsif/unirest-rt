@@ -4,8 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NUnit;
-using NUnit.Framework;
+//using NUnit;
+//using NUnit.Framework;
 using FluentAssertions;
 
 using unirest_net;
@@ -13,14 +13,15 @@ using unirest_net.http;
 using unirest_net.request;
 
 using System.Net.Http;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace unicorn_net_tests.request
 {
-    [TestFixture]
-    class HttpRequestTests
+    [TestClass]
+    public class HttpRequestTests
     {
-        [Test]
-        public static void HttpRequest_Should_Construct()
+        [TestMethod]
+        public void HttpRequest_Should_Construct()
         {
             Action Get = () => new HttpRequest(HttpMethod.Get, "http://localhost");
             Action Post = () => new HttpRequest(HttpMethod.Post, "http://localhost");
@@ -35,8 +36,8 @@ namespace unicorn_net_tests.request
             Put.ShouldNotThrow();
         }
 
-        [Test]
-        public static void HttpRequest_Should_Not_Construct_With_Invalid_URL()
+        [TestMethod]
+        public void HttpRequest_Should_Not_Construct_With_Invalid_URL()
         {
             Action Get = () => new HttpRequest(HttpMethod.Get, "http:///invalid");
             Action Post = () => new HttpRequest(HttpMethod.Post, "http:///invalid");
@@ -51,8 +52,8 @@ namespace unicorn_net_tests.request
             Put.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
-        public static void HttpRequest_Should_Not_Construct_With_None_HTTP_URL()
+        [TestMethod]
+        public void HttpRequest_Should_Not_Construct_With_None_HTTP_URL()
         {
             Action Get = () => new HttpRequest(HttpMethod.Get, "ftp://localhost");
             Action Post = () => new HttpRequest(HttpMethod.Post, "mailto:localhost");
@@ -67,8 +68,8 @@ namespace unicorn_net_tests.request
             Put.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
-        public static void HttpRequest_Should_Construct_With_Correct_Verb()
+        [TestMethod]
+        public void HttpRequest_Should_Construct_With_Correct_Verb()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://localhost");
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
@@ -83,8 +84,8 @@ namespace unicorn_net_tests.request
             Put.HttpMethod.Should().Be(HttpMethod.Put);
         }
 
-        [Test]
-        public static void HttpRequest_Should_Construct_With_Correct_URL()
+        [TestMethod]
+        public void HttpRequest_Should_Construct_With_Correct_URL()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://localhost");
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
@@ -99,8 +100,8 @@ namespace unicorn_net_tests.request
             Put.URL.OriginalString.Should().Be("http://localhost");
         }
 
-        [Test]
-        public static void HttpRequest_Should_Construct_With_Headers()
+        [TestMethod]
+        public void HttpRequest_Should_Construct_With_Headers()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://localhost");
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
@@ -115,8 +116,8 @@ namespace unicorn_net_tests.request
             Put.URL.OriginalString.Should().NotBeNull();
         }
 
-        [Test]
-        public static void HttpRequest_Should_Add_Headers()
+        [TestMethod]
+        public void HttpRequest_Should_Add_Headers()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://localhost");
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
@@ -137,8 +138,8 @@ namespace unicorn_net_tests.request
             Put.Headers.Should().Contain("User-Agent", "unirest-net/1.0");
         }
 
-        [Test]
-        public static void HttpRequest_Should_Add_Headers_Dictionary()
+        [TestMethod]
+        public void HttpRequest_Should_Add_Headers_Dictionary()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://localhost");
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
@@ -159,8 +160,8 @@ namespace unicorn_net_tests.request
             Put.Headers.Should().Contain("User-Agent", "unirest-net/1.0");
         }
 
-        [Test]
-        public static void HttpRequest_Should_Return_String()
+        [TestMethod]
+        public void HttpRequest_Should_Return_String()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://www.google.com");
             var Post = new HttpRequest(HttpMethod.Post, "http://www.google.com");
@@ -175,8 +176,8 @@ namespace unicorn_net_tests.request
             Put.asString().Body.Should().NotBeBlank();
         }
 
-        [Test]
-        public static void HttpRequest_Should_Return_Stream()
+        [TestMethod]
+        public void HttpRequest_Should_Return_Stream()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://www.google.com");
             var Post = new HttpRequest(HttpMethod.Post, "http://www.google.com");
@@ -191,8 +192,8 @@ namespace unicorn_net_tests.request
             Put.asBinary().Body.Should().NotBeNull();
         }
 
-        [Test]
-        public static void HttpRequest_Should_Return_Parsed_JSON()
+        [TestMethod]
+        public void HttpRequest_Should_Return_Parsed_JSON()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://www.google.com");
             var Post = new HttpRequest(HttpMethod.Post, "http://www.google.com");
@@ -207,8 +208,8 @@ namespace unicorn_net_tests.request
             Put.asJson<String>().Body.Should().NotBeBlank();
         }
 
-        [Test]
-        public static void HttpRequest_Should_Return_String_Async()
+        [TestMethod]
+        public void HttpRequest_Should_Return_String_Async()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://www.google.com").asStringAsync();
             var Post = new HttpRequest(HttpMethod.Post, "http://www.google.com").asStringAsync();
@@ -225,8 +226,8 @@ namespace unicorn_net_tests.request
             Put.Result.Body.Should().NotBeBlank();
         }
 
-        [Test]
-        public static void HttpRequest_Should_Return_Stream_Async()
+        [TestMethod]
+        public void HttpRequest_Should_Return_Stream_Async()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://www.google.com").asBinaryAsync();
             var Post = new HttpRequest(HttpMethod.Post, "http://www.google.com").asBinaryAsync();
@@ -243,8 +244,8 @@ namespace unicorn_net_tests.request
             Put.Result.Body.Should().NotBeNull();
         }
 
-        [Test]
-        public static void HttpRequest_Should_Return_Parsed_JSON_Async()
+        [TestMethod]
+        public void HttpRequest_Should_Return_Parsed_JSON_Async()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://www.google.com").asJsonAsync<String>();
             var Post = new HttpRequest(HttpMethod.Post, "http://www.google.com").asJsonAsync<String>();
@@ -261,8 +262,8 @@ namespace unicorn_net_tests.request
             Put.Result.Body.Should().NotBeBlank();
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Construct()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Construct()
         {
             Action Post = () => new HttpRequest(HttpMethod.Post, "http://localhost");
             Action Delete = () => new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -275,8 +276,8 @@ namespace unicorn_net_tests.request
             Put.ShouldNotThrow();
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Not_Construct_With_Invalid_URL()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Not_Construct_With_Invalid_URL()
         {
             Action Post = () => new HttpRequest(HttpMethod.Post, "http:///invalid");
             Action delete = () => new HttpRequest(HttpMethod.Delete, "http:///invalid");
@@ -289,8 +290,8 @@ namespace unicorn_net_tests.request
             put.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Not_Construct_With_None_HTTP_URL()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Not_Construct_With_None_HTTP_URL()
         {
             Action Post = () => new HttpRequest(HttpMethod.Post, "mailto:localhost");
             Action delete = () => new HttpRequest(HttpMethod.Delete, "news://localhost");
@@ -303,8 +304,8 @@ namespace unicorn_net_tests.request
             put.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Construct_With_Correct_Verb()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Construct_With_Correct_Verb()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -317,8 +318,8 @@ namespace unicorn_net_tests.request
             Put.HttpMethod.Should().Be(HttpMethod.Put);
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Construct_With_Correct_URL()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Construct_With_Correct_URL()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -331,8 +332,8 @@ namespace unicorn_net_tests.request
             Put.URL.OriginalString.Should().Be("http://localhost");
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Construct_With_Headers()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Construct_With_Headers()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -345,8 +346,8 @@ namespace unicorn_net_tests.request
             Put.URL.OriginalString.Should().NotBeNull();
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Add_Headers()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Add_Headers()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -364,8 +365,8 @@ namespace unicorn_net_tests.request
             Put.Headers.Should().Contain("User-Agent", "unirest-net/1.0");
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Add_Headers_Dictionary()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Add_Headers_Dictionary()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -383,8 +384,8 @@ namespace unicorn_net_tests.request
             Put.Headers.Should().Contain("User-Agent", "unirest-net/1.0");
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Encode_Fields()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Encode_Fields()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -402,8 +403,8 @@ namespace unicorn_net_tests.request
             Put.Body.Should().NotBeEmpty();
         }
 
-        [Test]
-        public static void HttpRequest_With_Body_Should_Encode_File()
+        [TestMethod]
+        public void HttpRequest_With_Body_Should_Encode_File()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -423,8 +424,8 @@ namespace unicorn_net_tests.request
             Put.Body.Should().NotBeEmpty();
         }
 
-        [Test]
-        public static void HttpRequestWithBody_Should_Encode_Multiple_Fields()
+        [TestMethod]
+        public void HttpRequestWithBody_Should_Encode_Multiple_Fields()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -449,8 +450,8 @@ namespace unicorn_net_tests.request
             Put.Body.Should().NotBeEmpty();
         }
 
-        [Test]
-        public static void HttpRequestWithBody_Should_Add_String_Body()
+        [TestMethod]
+        public void HttpRequestWithBody_Should_Add_String_Body()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -468,8 +469,8 @@ namespace unicorn_net_tests.request
             Put.Body.Should().NotBeEmpty();
         }
 
-        [Test]
-        public static void HttpRequestWithBody_Should_Add_JSON_Body()
+        [TestMethod]
+        public void HttpRequestWithBody_Should_Add_JSON_Body()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -487,8 +488,8 @@ namespace unicorn_net_tests.request
             Put.Body.Should().NotBeEmpty();
         }
 
-        [Test]
-        public static void Http_Request_Shouldnt_Add_Fields_To_Get()
+        [TestMethod]
+        public void Http_Request_Shouldnt_Add_Fields_To_Get()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://localhost");
             Action addStringField = () => Get.field("name", "value");
@@ -502,8 +503,8 @@ namespace unicorn_net_tests.request
             addKeyFields.ShouldThrow<InvalidOperationException>();
         }
 
-        [Test]
-        public static void Http_Request_Shouldnt_Add_Body_To_Get()
+        [TestMethod]
+        public void Http_Request_Shouldnt_Add_Body_To_Get()
         {
             var Get = new HttpRequest(HttpMethod.Get, "http://localhost");
             Action addStringBody = () => Get.body("string");
@@ -513,8 +514,8 @@ namespace unicorn_net_tests.request
             addJSONBody.ShouldThrow<InvalidOperationException>();
         }
 
-        [Test]
-        public static void HttpRequestWithBody_Should_Not_Allow_Body_For_Request_With_Field()
+        [TestMethod]
+        public void HttpRequestWithBody_Should_Not_Allow_Body_For_Request_With_Field()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
@@ -547,8 +548,8 @@ namespace unicorn_net_tests.request
             addObjectBodyPut.ShouldThrow<InvalidOperationException>();
         }
 
-        [Test]
-        public static void HttpRequestWithBody_Should_Not_Allow_Fields_For_Request_With_Body()
+        [TestMethod]
+        public void HttpRequestWithBody_Should_Not_Allow_Fields_For_Request_With_Body()
         {
             var Post = new HttpRequest(HttpMethod.Post, "http://localhost");
             var Delete = new HttpRequest(HttpMethod.Delete, "http://localhost");
