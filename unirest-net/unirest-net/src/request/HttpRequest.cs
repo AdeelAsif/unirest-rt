@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,7 +7,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using unirest_net.http;
 
 namespace unirest_net.request
@@ -34,7 +34,7 @@ namespace unirest_net.request
             {
                 if (
                     !(locurl.IsAbsoluteUri &&
-                      (locurl.Scheme == Uri.UriSchemeHttp || locurl.Scheme == Uri.UriSchemeHttps)) ||
+                      (locurl.Scheme == "http" || locurl.Scheme == "https")) ||
                     !locurl.IsAbsoluteUri)
                 {
                     throw new ArgumentException("The url passed to the HttpMethod constructor is not a valid HTTP/S URL");
@@ -156,8 +156,8 @@ namespace unirest_net.request
                 throw new InvalidOperationException("Can't add explicit body to request with fields");
             }
 
-            var serializer = new JavaScriptSerializer();
-            Body = new MultipartContent { new StringContent(serializer.Serialize(body)) };
+            
+            Body = new MultipartContent { new StringContent(JsonConvert.SerializeObject(body)) };
             hasExplicitBody = true;
             return this;
         }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
+using System.Reflection;
 
 namespace unirest_net.http
 {
@@ -26,22 +27,23 @@ namespace unirest_net.http
                 Task.WaitAll(streamTask);
                 Raw = streamTask.Result;
 
+                
+
                 if (typeof(T) == typeof(String))
                 {
                     var stringTask = response.Content.ReadAsStringAsync();
                     Task.WaitAll(stringTask);
                     Body = (T)(object)stringTask.Result;
                 }
-                else if (typeof(Stream).IsAssignableFrom(typeof(T)))
+                else if (typeof(Stream).GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo()))
                 {
                     Body = (T)(object)Raw;
                 }
                 else
-                {
-                    var serializer = new JavaScriptSerializer();
+                {   
                     var stringTask = response.Content.ReadAsStringAsync();
                     Task.WaitAll(stringTask);
-                    Body = serializer.Deserialize<T>(stringTask.Result);
+                    Body = JsonConvert.DeserializeObject<T>(stringTask.Result);
                 }
             }
 
