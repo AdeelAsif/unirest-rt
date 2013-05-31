@@ -6,10 +6,10 @@
             Version="1.0.0.0" />
   
   <Properties>
-    <DisplayName>unirest_net_tests</DisplayName>
+    <DisplayName>unirest_rt_tests</DisplayName>
     <PublisherDisplayName>Michael</PublisherDisplayName>
     <Logo>Images\UnitTestStoreLogo.png</Logo>
-    <Description>unirest_net_tests</Description>
+    <Description>unirest_rt_tests</Description>
   </Properties>
   
   <Prerequisites>

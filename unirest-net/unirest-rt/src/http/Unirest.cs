@@ -5,9 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 
-using unirest_net.request;
+using unirest_rt.request;
 
-namespace unirest_net.http
+namespace unirest_rt.http
 {
     public class Unirest
     {
